@@ -1,5 +1,5 @@
 Vagrant::Config.run do |config|
-  config.vm.box = "millisami-11-04-server-amd64"
+  config.vm.box = "millisami-10-04-server-amd64"
   config.vm.network "33.33.33.10"
 
   # Forward a port from the guest to the host, which allows for outside
@@ -11,45 +11,61 @@ Vagrant::Config.run do |config|
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
   
-  config.vm.provision :chef_solo do |chef|
-   # chef.recipe_url = "http://cloud.github.com/downloads/millisami/chef_repo/cookbooks.tar.gz"
-   # chef.cookbooks_path = [:vm, "cookbooks"]
-   chef.cookbooks_path = ["~/chef-repo/cookbooks"]
-   # chef.roles_path = 'chef/roles'
-   # chef.add_role "nerd_factory"
-   chef.add_recipe "base"
-   # chef.add_recipe "rvm"
-   # chef.add_recipe "rvm::default"
-   chef.add_recipe "rvm::install"
-   chef.add_recipe "rvm::ruby_192"
-   
-   # chef.json = { 
-   #     :base => {
-   #       :system_packages => ["tree", "htop", "vim-nox"]
-   #     }
-   #   }
-  end
-
-  # Enable provisioning with chef server, specifying the chef server URL,
-  # and the path to the validation key (relative to this Vagrantfile).
-  #
-  # The Opscode Platform uses HTTPS. Substitute your organization for
-  # ORGNAME in the URL and validation key.
-  #
-  # If you have your own Chef Server, use the appropriate URL, which may be
-  # HTTP instead of HTTPS depending on your configuration. Also change the
-  # validation key to validation.pem.
-  #
-  # config.vm.provision :chef_server do |chef|
-  #   chef.chef_server_url = "https://api.opscode.com/organizations/ORGNAME"
-  #   chef.validation_key_path = "ORGNAME-validator.pem"
+  # config.vm.provision :chef_solo do |chef|
+  #  # chef.recipe_url = "http://cloud.github.com/downloads/millisami/chef_repo/cookbooks.tar.gz"
+  #  # chef.cookbooks_path = [:vm, "cookbooks"]
+  #  chef.cookbooks_path = ["~/chef-repo/cookbooks"]
+  #  # chef.roles_path = 'chef/roles'
+  #  # chef.add_role "nerd_factory"
+  #  chef.add_recipe "base"
+  #  chef.add_recipe "rvm::install"
+  #  chef.add_recipe "rvm::ruby_192"
+  #  
+  #  chef.add_recipe "mysql::client"
+  #  chef.add_recipe "mysql::server"
+  #  
+  #  chef.add_recipe "app"
+  # 
+  #  chef.json = { 
+  #      :base => {
+  #        :system_packages => ["tree", "htop", "vim-nox"]
+  #      },
+  #      :app => {
+  #        :repository => "https://github.com/millisami/NerdFactory.git"
+  #      },
+  #      :db => {
+  #        :adapter => "mysql"
+  #      },
+  #      :mysql => {:server_root_password => "dbpassword"}
+  #    }
   # end
-  #
-  # If you're using the Opscode platform, your validator client is
-  # ORGNAME-validator, replacing ORGNAME with your organization name.
-  #
-  # IF you have your own Chef Server, the default validation client name is
-  # chef-validator, unless you changed the configuration.
-  #
-  #   chef.validation_client_name = "ORGNAME-validator"
+
+  config.vm.provision :chef_client do |chef|
+    chef.chef_server_url = "https://api.opscode.com/organizations/sprout"
+    chef.validation_key_path = "/Users/millisami/chef-repo/.chef/sprout-validator.pem"
+    chef.validation_client_name = "sprout-validator"
+    
+     chef.add_recipe "base"
+     chef.add_recipe "rvm::install"
+     chef.add_recipe "rvm::ruby_192"
+  
+     chef.add_recipe "mysql::client"
+     chef.add_recipe "mysql::server"
+     # chef.add_recipe "rails"
+  
+     chef.add_recipe "app"
+  
+     chef.json = { 
+         :base => {
+           :system_packages => ["tree", "htop", "vim-nox"]
+         },
+         :app => {
+           :repository => "https://github.com/millisami/NerdFactory.git"
+         },
+         :db => {
+           :adapter => "mysql"
+         },
+         :mysql => {:server_root_password => "dbpassword"}
+       }    
+  end
 end
