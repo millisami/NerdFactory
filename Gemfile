@@ -13,3 +13,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'mocha', :require  => nil
 end
+
+group :production do
+  gem 'mysql2'
+end
