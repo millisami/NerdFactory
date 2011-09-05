@@ -16,6 +16,6 @@ group :test do
 end
 
 group :production do
-  gem 'mysql2'
+  gem 'mysql'
   gem 'red_unicorn'
 end
