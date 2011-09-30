@@ -47,11 +47,11 @@ ActiveRecord::Schema.define(:version => 20100428154946) do
   end
 
   create_table "products", :force => true do |t|
-    t.string   "name",                                    :null => false
+    t.string   "name"
     t.text     "description"
-    t.decimal  "price",                                   :null => false
-    t.integer  "category_id",                             :null => false
-    t.boolean  "new",                  :default => false, :null => false
+    t.decimal  "price"
+    t.integer  "category_id"
+    t.boolean  "new"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "picture_file_name"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20100428154946) do
     t.string   "string",               :limit => 100
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
+    t.string   "password_salt",                       :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
